@@ -1,4 +1,4 @@
-stats = [
+var stats = [
     {
         "Team": "MilwaukeeBucks",
         "W": 58,
@@ -170,7 +170,7 @@ stats = [
     {
         "Team": "LALakers",
         "W": 43,
-        "L": 39,array
+        "L": 39,
         "+/-": 2,
         "GB": "10.0",
         "PCT": ".524"
@@ -240,14 +240,35 @@ stats = [
         "PCT": ".268"
     }
 ]
+const firstStats = stats.slice()
 
-// write a function to display the stats array as a table
-
-const getTable = () =>{
+const getTable = () => {
     const table = document.createElement('table')
     table.id = 'data-table'
+    const initRow = document.createElement('tr')
+    const initNameCell = document.createElement('th')
+    initNameCell.textContent = 'Team'
+    const initWinCell = document.createElement('th')
+    initWinCell.textContent = 'W'
+    const initLoseCell = document.createElement('th')
+    initLoseCell.textContent = 'L'
+    const initDiffCell = document.createElement('th')
+    initDiffCell.textContent = '+/-'
+    const initGbCell = document.createElement('th')
+    initGbCell.textContent = 'GB'
+    const initPctCell = document.createElement('th')
+    initPctCell.textContent = 'PCT'
 
-    stats.array.forEach(element => {
+    initRow.appendChild(initNameCell)
+    initRow.appendChild(initWinCell)
+    initRow.appendChild(initLoseCell)
+    initRow.appendChild(initDiffCell)
+    initRow.appendChild(initGbCell)
+    initRow.appendChild(initPctCell)
+
+    table.appendChild(initRow)
+
+    stats.forEach(element => {
         const row = document.createElement('tr')
 
         const nameCell = document.createElement('td')
@@ -268,7 +289,6 @@ const getTable = () =>{
         const pctCell = document.createElement('td')
         pctCell.textContent = element['PCT']
 
-
         row.appendChild(nameCell)
         row.appendChild(winCell)
         row.appendChild(loseCell)
@@ -282,6 +302,79 @@ const getTable = () =>{
     const container = document.getElementById('table-container')
     container.appendChild(table)
 }
+const sortTableByWin = () => {
+    const table = document.getElementById('data-table')
+    const rows = table.getElementsByTagName('tr')
+    const rowsArray = Array.from(rows)
+    rowsArray.shift()
+
+    rowsArray.sort((a, b) => {
+        const aWin = parseInt(a.getElementsByTagName('td')[1].textContent)
+        const bWin = parseInt(b.getElementsByTagName('td')[1].textContent)
+        return bWin - aWin
+    })
+
+    rowsArray.forEach(row => {
+        table.appendChild(row)
+    })
+}
+
+const sortByWins = () => {
+    stats.sort((a, b) => {
+        return b['W'] - a['W']
+        }
+    )
+    // delete the current table
+    const container = document.getElementById('table-container')
+    const table = document.getElementById('data-table')
+    container.removeChild(table)
+    // create a new table
+    getTable()
+    
+}
+
+const sortByLosses = () => {
+    stats.sort((a, b) => {
+        return  b['L'] - a['L']
+    }
+    )
+    const container = document.getElementById('table-container')
+    const table = document.getElementById('data-table')
+    container.removeChild(table)
+    // create a new table
+    getTable()
+}
+
+const searchTeam = () => {
+    const team = document.getElementById('search-input').value
+    const result = stats.filter(element => {
+        return element['Team'].toLowerCase().startsWith(team.toLowerCase())
+    })
+    if (result) {
+        const container = document.getElementById('table-container')
+        const table = document.getElementById('data-table')
+        container.removeChild(table)
+        // create a new table
+        const newStats = result
+        stats = newStats
+        getTable()
+    } else {
+        alert('Team not found')
+    }
+}
+
+const resetTable = () => {
+    const container = document.getElementById('table-container')
+
+    const table = document.getElementById('data-table')
+
+    container.removeChild(table)
+    stats = firstStats
+    getTable()
+}
 
 
-window.onload = getTable()
+
+window.onload = () => {
+    getTable()
+}

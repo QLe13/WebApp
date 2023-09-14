@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task 3 page</title>
+    <link rel="stylesheet" href="./styles/task3.css">
 </head>
 <body>
     <script src="../scripts/task3.js"></script>
     <title> NBA Standings through games of 4/9/23</title><center><h3> NBA Standings through games of 4/9/23</h3></center><hr>
-        <div id="table-container"></div>
+
+    <div id='statsContent' class="statsContent">
+        <div>
+            <input type="text" id="search-input" placeholder="Search for a team..." onchange="searchTeam()">
+            <button onclick="resetTable()">Reset Search</button>
+            <button onclick="sortByWins()">Sort By Wins</button>
+            <button onclick="sortByLosses()">Sort By Losses</button>
+        </div>
+            <div id="table-container"></div>
+    </div>
     <hr>
     
 </body>
